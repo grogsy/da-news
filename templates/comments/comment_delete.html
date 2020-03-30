@@ -1,0 +1,20 @@
+{% extends 'layout/form_container.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block form %}
+   {% if user.is_authenticated and user.username == comment.author.username %}
+        <h5>Your comment in <a href="{% url 'article_detail' comment.article.pk %}">{{ comment.article.title }}</a>:</h5>
+        <p><em>"{{ comment.text }}"</em></p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <p>Do you really want to delete this comment?</p>
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+   {% else %}
+        <h3>You don't have access to editing this article because you are not the author.</h3>
+   {% endif %}
+   <p><a href="{% url 'article_detail' comment.article.pk %}">Back to article</a></p>
+{% endblock form %}
+    

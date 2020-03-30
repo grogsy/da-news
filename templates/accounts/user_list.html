@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block title %}All Users{% endblock title %}
+    
+
+{% block content %}
+    <div class="tableheader row border rounded">
+        <div class="col-1 border d-flex"></div>
+        <div class="usernames col-4 border d-flex align-items-center justify-content-center">Username</div>
+        <div class="emails col-4 border d-flex align-items-center justify-content-center">Email</div>
+        <div class="joindates col-3 border d-flex align-items-center justify-content-center">Join Date</div>
+    </div>
+    {% for u in object_list %}
+        <div class="row border rounded mb-2">
+            <div class="userimg col-1 border d-flex justify-content-center">
+                <img width="75" height="75" src="{{ u.image_url }}" class="rounded-circle">
+            </div>
+            <div class="username col-4 border d-flex align-items-center">
+                <a href="{% url 'user_detail' u.pk %}">{{ u.username }}</a>
+            </div>
+            <div class="useremail col-4 border d-flex align-items-center">
+                {{ u.email }}
+            </div>
+            <div class="userjoindate col-3 border d-flex align-items-center">
+                {{u.join_date}}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
+    

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="article-entry">
+        <h2>{{ object.title }}</h2>
+        <p>by <a href="{% url 'user_detail' object.author.pk %}">{{ object.author }}</a> | {{ object.date }}</p>
+        {% if object.edited %}
+            <small><em>Edited: {{ object.edited }}</em></small>
+        {% endif %}
+        <hr />
+        {% autoescape off %}
+            <p>{{ object.body|linebreaksbr }}</p>
+        {% endautoescape %}
+    </div>
+    <p>
+        {% if user.is_authenticated and user.username == object.author.username %}
+            <a href="{% url 'article_edit' article.pk %}">Edit</a> | 
+            <a href="{% url 'article_delete' article.pk %}">Delete</a>
+        {% endif %}
+    </p>
+    <hr />
+    <p>Back to <a href="{% url 'article_list' %}">All Articles.</a></p>
+    <div class="card mb-5">
+        <div class="card-header">
+            <h4>Comments</h4>
+        </div>
+        <div class="card-body">
+            {% if comments.exists %}
+                {% for comment in comments %}
+                    <div class="card mb-2">
+                        <div class="card-header p-1 pl-2">
+                            <span class="font-weight-bold">
+                                <a href="{% url 'user_detail' comment.author.pk %}">
+                                    <img width="25" height="25" src="{{ comment.author.image_url }}" class="rounded-circle">
+                                    {{ comment.author }}
+                                </a>, on <em>{{ comment.date }}
+                                {% if comment.edited %}(<small>Edited: {{ comment.edited }}</small>){% endif %}</em>, 
+                                wrote:
+                            </span>
+                        </div>
+                        <div class="card-body p-1 pl-2">
+                            {{ comment.text }}
+                            {% if user.is_authenticated and user.username == comment.author.username %}
+                                    <a class="btn btn-sm btn-outline-secondary float-right mx-1" href="{% url 'comment_edit' article.pk comment.pk %}">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger float-right mx-1" href="{% url 'comment_delete' article.pk comment.pk %}" title="Delete Comment">X</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h6>No one has commented yet.</h6>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'comment_new' article.pk %}">Write a Comment</a>
+        </div>
+    </div>
+{% endblock content %}
+    

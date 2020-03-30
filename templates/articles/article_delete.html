@@ -1,0 +1,22 @@
+{% extends 'layout/form_container.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block form %}
+   <h1>Delete</h1> 
+   
+   {% if user.is_authenticated and user.username == article.author.username %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{ article.title }}"?</p>
+            <button class="btn btn-danger ml-2" type="submit">Really Delete</button>
+        </form>
+    {% else %}
+        <h3>You don't have access to editing this article because you are not the author.</h3>
+    {% endif %}
+    <div class="mt-5">
+        <p><a href="{% url 'article_detail' article.pk %}">Back To Article</a></p>
+    </div>
+       
+{% endblock form %}
+    

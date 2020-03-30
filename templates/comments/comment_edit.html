@@ -1,0 +1,17 @@
+{% extends 'layout/form_container.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block form %}
+    <h1>Edit comment</h1>
+    {% if user.is_authenticated and user.username == object.author.username %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-info" type="submit">Update</button>
+        </form>
+    {% else %}
+        <h3>You don't have access to editing this article because you are not the author.</h3>
+    {% endif %}
+{% endblock form %}
+    

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+   Home 
+{% endblock title %}
+
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Da News</h1>
+        <p class="lead">A News website built using Django.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{% url 'article_list' %}" role="button">Check out Da News</a>
+        </p>
+    </div>
+    <!-- {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+    {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Signup</a>
+    {% endif %} -->
+{% endblock content %}
+    
+    

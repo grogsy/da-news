@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-3">
+            <img width="250" height="250" src="{{ object.image_url }}" class="rounded-circle">
+        </div>
+        <div class="col-9 mt-5">
+            <div class="username border rounded p-3">
+                {% if user.is_authenticated and user.username == object.username %}
+                    <a href="{% url 'user_edit' object.pk %}" class="btn btn-secondary float-right">Edit</a>
+                {% endif %}
+                <h2>{{ object.username }}</h2>
+                <p>Joined: <small>{{ object.join_date }}</small></p>
+            </div>
+            <div class="userbio mt-5">
+                <h2>Bio</h2>
+                <hr />
+                <p class="pl-3">{{ object.bio }}</p>
+            </div>
+            <div class="userarticles mt-5">
+                <h2>Articles</h2>
+                <hr />
+                {% if object.articles.exists %}
+                    {% for article in object.articles.all %}
+                        <p class="pl-3"><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p><em>This user hasn't written any articles.</em></p>
+                {% endif %}
+            </div>
+            <div class="usercomments mt-5">
+                <h2>Comments</h2>
+                <hr />
+                {% if object.comments.exists %}
+                    {% for comment in object.comments.all %}
+                        <p class="pl-3">{{ object.username }} wrote in <em><a href="{% url 'article_detail' comment.article.pk %}">{{ comment.article.title }}</a></em>:</p>
+                        <!-- <p class="pl-5"><em>{{ comment.text }}</em></p> -->
+                        <blockquote class="blockquote text-left ml-4 pl-2 border rounded h-100">
+                            <p class="pt-2">{{ comment.text }}</p>
+                        </blockquote>
+                    {% endfor %}
+                {% else %}
+                    <p><em>This user hasn't written any comments.</em></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
